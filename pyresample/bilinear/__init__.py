@@ -517,6 +517,7 @@ def _get_output_xy(target_area_def, proj):
     out_lats = _convert_masks_to_nans(out_lats)
 
     # Mask invalid coordinates
+    out_lons[out_lons < -180] += 360
     out_lons, out_lats = _mask_coordinates(out_lons, out_lats)
 
     # Convert coordinates to output projection x/y space

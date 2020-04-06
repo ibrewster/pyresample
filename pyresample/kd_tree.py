@@ -459,11 +459,11 @@ def _get_valid_output_index(source_geo_def, target_geo_def, target_lons,
             valid_output_index = valid_output_index.astype(np.bool)
 
     # Remove illegal values
-    valid_out = ((target_lons >= -180) & (target_lons <= 180) &
-                 (target_lats <= 90) & (target_lats >= -90))
+    # valid_out = ((target_lons >= -180) & (target_lons <= 180) &
+    #              (target_lats <= 90) & (target_lats >= -90))
 
-    # Combine reduced and legal values
-    valid_output_index = (valid_output_index & valid_out)
+    # # Combine reduced and legal values
+    # valid_output_index = (valid_output_index & valid_out)
     if isinstance(valid_output_index, np.ma.MaskedArray):
         valid_output_index = valid_output_index.filled(False)
 
@@ -548,6 +548,7 @@ def _query_resample_kdtree(resample_kdtree,
         cartesian = _spatial_mp.Cartesian()
 
     target_lons_valid = target_lons.ravel()[valid_output_index]
+    target_lons_valid[target_lons_valid < -180] += 360
     target_lats_valid = target_lats.ravel()[valid_output_index]
 
     output_coords = cartesian.transform_lonlats(target_lons_valid,
